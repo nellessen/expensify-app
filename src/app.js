@@ -11,8 +11,6 @@ console.ignoredYellowBox = ['Warning:'];
 
 const store = configureStore();
 
-const state = store.getState();
-
 const jsx = (
   <Provider store={store}>
     <AppRouter />

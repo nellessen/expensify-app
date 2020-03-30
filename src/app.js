@@ -6,6 +6,7 @@ import AppRouter from './routers/AppRouter';
 import configureStore from './store/configureStore';
 import 'normalize.css/normalize.css';
 import './styles/style.scss';
+import './firebase/firebase';
 
 console.ignoredYellowBox = ['Warning:'];
 

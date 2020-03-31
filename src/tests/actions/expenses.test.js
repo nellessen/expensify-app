@@ -1,10 +1,23 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { startAddExpense, addExpense, editExpense, removeExpense } from '../../actions/expenses';
+import { startAddExpense, addExpense, editExpense, removeExpense, setExpenses, startSetExpenses } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import database from '../../firebase/firebase';
 
 const createMockStore = configureMockStore([thunk]);
+
+beforeEach((done) => {
+  const expenseData = {};
+  expenses.forEach(({ id, description, note, amount, createdAt }) => {
+    expenseData[id] = {
+      description,
+      note,
+      amount,
+      createdAt,
+    }
+  });
+  database.ref('expenses').set(expenseData).then(() => done());
+});
 
 test('removeExpense() should return remove expense action object', () => {
   const action = removeExpense({ id: 'ID' });
@@ -16,12 +29,12 @@ test('removeExpense() should return remove expense action object', () => {
 });
 
 test('editExpense() should return edit expense action object', () => {
-  const action = editExpense('ID', { changes: 'TEST'});
+  const action = editExpense('ID', { changes: 'TEST' });
 
   expect(action).toEqual({
     type: 'EDIT_EXPENSE',
     id: 'ID',
-    updates: { changes: 'TEST'},
+    updates: { changes: 'TEST' },
   });
 });
 
@@ -86,17 +99,25 @@ test('startAddExpense() should add expense with defaults to database and store',
   });
 });
 
-// test('addExpense() should return add expense action object with defaults', () => {
-//   const action = addExpense();
+test('setExpenses() should return set expense action object', () => {
+  const action = setExpenses(expenses);
 
-//   expect(action).toEqual({
-//     type: 'ADD_EXPENSE',
-//     expense: {
-//       id: expect.any(String),
-//       description: '',
-//       amount: 0,
-//       createdAt: 0,
-//       note: ''
-//     },
-//   });
-// });
+  expect(action).toEqual({
+    type: 'SET_EXPENSES',
+    expenses,
+  });
+});
+
+test('startSetExpenses() should add expense from database to store', (done) => {
+  const store = createMockStore({});
+
+  store.dispatch(startSetExpenses()).then(() => {
+    const actions = store.getActions();
+    expect(actions).toEqual([{
+      type: 'SET_EXPENSES',
+      expenses,
+    }]);
+
+    done();
+  });
+});

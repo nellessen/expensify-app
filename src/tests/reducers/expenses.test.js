@@ -75,7 +75,18 @@ test('expenses reducer should not edit expense if ID not found', () => {
     type: 'EDIT_EXPENSE',
     id: '-1',
     updates: updates
-  })
+  });
 
   expect(state).toEqual(expenses);
+});
+
+test('expenses reducer should set expense', () => {
+  const newExpenses = [expenses[0], expenses[2]];
+
+  const state = expensesReducer([expenses[1]], {
+    type: 'SET_EXPENSES',
+    expenses: newExpenses,
+  });
+
+  expect(state).toEqual(newExpenses);
 });

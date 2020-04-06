@@ -8,7 +8,7 @@ exports[`Header component should rendered correctly 1`] = `
   <NavLink
     activeClassName="is-active"
     exact={true}
-    to="/"
+    to="/dashboard"
   >
     Dashboard
   </NavLink>
@@ -20,18 +20,10 @@ exports[`Header component should rendered correctly 1`] = `
     Create
   </NavLink>
    -
-  <NavLink
-    activeClassName="is-active"
-    to="/edit"
+  <button
+    onClick={[Function]}
   >
-    Edit
-  </NavLink>
-   -
-  <NavLink
-    activeClassName="is-active"
-    to="/help"
-  >
-    Help
-  </NavLink>
+    Logout
+  </button>
 </header>
 `;
